@@ -1,0 +1,46 @@
+Group(5-3): Nicholas Weigand, Jacob Halsey, Colton Parks, Joshua Hamilton
+
+"Recipe Finder Webpage using API"
+-future link to github
+-future link to slideshow
+
+Links to individual project web pages: 
+Nick-
+Jacob-
+Josh-
+Colton-
+
+
+
+How many times have you struggled to make a quick and tasty meal at home? Does it feel impossible to find a well rated recipe, get the right ingredients, or directions to 
+create your dish? Saucy simplifies and saves time when cooking at home. The webpage is designed to use an API that pulls the highest rated recipes off of the internet from 
+articles, databases, and websites to streamline the cooking process. Our goal is to solve the age old question: What's for dinner tonight? 
+
+
+We are all using VSCode or JetBrains IDEs to run our code for the project, which is composed of these main files: index.html, script.js, login.php, logout.php, search.php, 
+config.php, favorites.php, cookbook.php, test_api.php, styles.css, json config files, and more to come. Index.html is our main home page that when launched, prompts users 
+with the option to login or create an account on the same page. Users must enter email and password to login. To create an account, users must in addition enter a phone 
+number. Any errors will appear on the same page if the information given by the user is incorrect such as letters in the phone number box, too many or too few characters, no 
+input, etc. If creating an account is successful, the user will be given a confirmation and asked to reload the page to log in. If login is successful, the user will be sent
+to a new page.
+
+This page contains a welcome to Saucy message with the search bar for user queries for recipes. They can use keywords to find recipes, with more keywords giving more specific
+outputs. We are using a ChatGBT 3.5 key for the API which is called when the search.php is launched by the user to obtain a recipe. This used to be stored in a separate .env 
+file for security, but we later discovered it needed to be in the same file that it was called in. Our config.php includes the info to setup connection to our database on 
+Ampps. This database includes all our SQL script for saving recipes, favorites, login info, etc. We are not able to use the school server MariaDB due to the permissions
+restrictions.
+
+
+Individual member notes:
+In conclusion, this was a much harder project than anticipated. For starters, using the school Maria DB was near impossible to use due to the restrictions on our given users.
+This is problematic when we need certain admin permissions to perform certain tests and create temporary databases with ours. After switching to Ampps, the majority of our 
+time was spent connecting the dots between our front end and making sure user inputs were saved into the SQL tables. Ensuring the user stayed informed with live status alerts
+and keeping all the webpages look pretty was also surprisingly exhausting. However, between the 4 of us, it was a fun project and a good exercise if ever to pursue Web Design
+as a career.
+
+
+References: 
+-https://www.mealme.ai/?utm_source=google&utm_medium=google+search&utm_campaign=Search+ads+for+conversations&gad_source=1&gclid=Cj0KCQiA6Ou5BhCrARIsAPoTxrD7djdV8nKfrdvc4lT7sGZbgh7xMtbrEBSkHYR8vW4fAUY2-GgQy4MaAn_JEALw_wcB
+-https://www.geeksforgeeks.org/web-apis-tutorial/ 
+-https://www.geeksforgeeks.org/what-is-an-api/ 
+
