@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Saucy</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 100vh;
+        }
+        header h1 {
+            color: green;
+            font-weight: bold;
+            font-family: 'Dancing Script', cursive; /* Elegant cursive font */
+            font-size: 5em; /* 3 times bigger */
+            margin: 20px 0; /* Small spacing around the title */
+        }
+        #auth-section {
+            margin-top: 10px; /* Aligns section near the top of the screen */
+        }
+        #auth-section h2 {
+            color: green;
+            font-size: 20px;
+            margin-bottom: 15px; /* Space below the "Login" header */
+        }
+        form {
+            display: inline-block; /* Keeps form content compact */
+            text-align: left; /* Aligns labels and inputs properly */
+        }
+        label {
+            display: block;
+            margin-top: 10px; /* Spacing between label and input */
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            box-sizing: border-box; /* Prevents overflow */
+        }
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            color: white;
+            background-color: green;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: darkgreen;
+        }
+        p a {
+            color: green; /* Makes the hyperlink green */
+            text-decoration: none; /* Removes underline */
+        }
+        p a:hover {
+            text-decoration: underline; /* Adds underline on hover */
+        }
+        footer {
+            margin-top: auto;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Saucy</h1>
+    </header>
+    <main>
+        <!-- Authentication Section -->
+        <section id="auth-section">
+            <h2>Login</h2> <!-- Login below the title -->
+            <form id="login-form">
+                <label for="email">Email:</label>
+                <input type="email" id="email" placeholder="Enter your email" required>
+                
+                <label for="password">Password:</label>
+                <input type="password" id="password" placeholder="Enter your password" required>
+                
+                <button type="submit" id="login-btn">Login</button>
+            </form>
+
+            <p>Don't have an account? <a href="create.html">Create one</a></p>
+        </section>
+    </main>
+    <footer>
+        <p>© 2024 Saucy Recipe Finder. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const serverBaseUrl = "http://localhost/FinalProject";
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const loginForm = document.getElementById("login-form");
+
+            loginForm.addEventListener("submit", async (event) => {
+                event.preventDefault();
+                const email = document.getElementById("email").value;
+                const password = document.getElementById("password").value;
+
+                try {
+                    const response = await fetch(`${serverBaseUrl}/login.php`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ email, password }),
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        alert("Login succesful! Welcome!");
+                        window.location.href = "search.html"; // go to Search.html
+                    } else {
+                        alert(data.message);
+                    }
+                } catch (error) {
+                    console.error("Incorrect password or email. Please try again", error);
+                    alert("An error occurred. Please try again.");
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+

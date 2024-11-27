@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Finder</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 100vh;
+        }
+        header {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        header h1 {
+            color: green;
+            font-weight: bold;
+            font-family: 'Dancing Script', cursive;
+            font-size: 5em;
+            margin: 0;
+        }
+        #cookbook-btn {
+            background-color: blue;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 1em;
+            margin-top: 10px;
+        }
+        #cookbook-btn:hover {
+            background-color: darkblue;
+        }
+        #search-section {
+            margin: 20px 0;
+        }
+        #search-bar {
+            width: 300px;
+            padding: 10px;
+            margin-right: 10px;
+        }
+        #search-btn {
+            padding: 10px 20px;
+            background-color: green;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        #search-btn:hover {
+            background-color: darkgreen;
+        }
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Ensures left alignment of results */
+            padding: 20px;
+        }
+        #recipe-cards {
+            width: 100%;
+            margin-top: 20px;
+        }
+        .recipe-card {
+            margin-bottom: 15px; /* Space between recipe cards */
+        }
+        .recipe-title {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        footer {
+            margin-top: auto;
+            text-align: center;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Saucy</h1>
+        <div id="search-section">
+            <input type="text" id="search-bar" placeholder="Enter recipe or ingredient...">
+            <button id="search-btn">Search</button>
+        </div>
+        <a href="cookbook.html" id="cookbook-btn">MyCookBook</a>
+    </header>
+    <main>
+        <!-- Results Section -->
+        <section id="results">
+            <div id="recipe-cards"></div>
+        </section>
+    </main>
+    <footer>
+        <p>© 2024 Saucy Recipe Finder. All rights reserved.</p>
+    </footer>
+    <script>
+        const serverBaseUrl = "http://localhost/FinalProject";
+
+        document.addEventListener("DOMContentLoaded", () => {
+            document.getElementById("search-btn").addEventListener("click", () => {
+                const query = document.getElementById("search-bar").value;
+                if (query) {
+                    searchRecipes(query);
+                } else {
+                    alert("Please enter a search term.");
+                }
+            });
+        });
+
+        async function searchRecipes(query) {
+            try {
+                const response = await fetch(`${serverBaseUrl}/test_api.php?query=${encodeURIComponent(query)}`, {
+                    method: "GET",
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const recipesText = await response.text();
+                displayGeneratedRecipes(recipesText);
+            } catch (error) {
+                console.error("Search failed:", error);
+                alert("Failed to fetch recipes. Please try again.");
+            }
+        }
+
+        function displayGeneratedRecipes(recipesText) {
+    const container = document.getElementById("recipe-cards");
+    container.innerHTML = "";
+
+    const recipes = recipesText.split("-----").map((recipe) => recipe.trim()).filter((recipe) => recipe);
+    recipes.forEach((recipe) => {
+        const recipeCard = document.createElement("div");
+        recipeCard.className = "recipe-card";
+
+        const recipeLines = recipe.split("\n");
+        const titleLine = recipeLines.find((line) => line.startsWith("Title:"));
+        const titleText = titleLine.replace("Title: ", ""); // Remove "Title: " prefix
+
+        const title = document.createElement("div");
+        title.className = "recipe-title";
+        title.textContent = titleText;
+
+        const detailsContainer = document.createElement("div");
+        detailsContainer.className = "recipe-details";
+
+        recipeLines.forEach((line) => {
+            if (!line.startsWith("Title:")) {
+                const detailLine = document.createElement("div");
+                detailLine.textContent = line.trim();
+                detailsContainer.appendChild(detailLine);
+            }
+        });
+
+        recipeCard.appendChild(title);
+        recipeCard.appendChild(detailsContainer);
+        container.appendChild(recipeCard);
+    });
+}
+
+    </script>
+</body>
+</html>

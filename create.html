@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Saucy</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Saucy</h1>
+    </header>
+    <main>
+        <!-- Authentication Section -->
+        <section id="auth-section">
+            <h2>Welcome to Saucy</h2>
+            <form id="login-form">
+                <label for="email">Email:</label>
+                <input type="email" id="email" placeholder="Enter your email" required>
+                
+                <label for="password">Password:</label>
+                <input type="password" id="password" placeholder="Enter your password" required>
+                
+                <button type="submit" id="login-btn">Login</button>
+            </form>
+
+        </section>
+    </main>
+    <footer>
+        <p>© 2024 Saucy Recipe Finder. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const serverBaseUrl = "http://localhost/FinalProject";
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const loginForm = document.getElementById("login-form");
+
+            loginForm.addEventListener("submit", async (event) => {
+                event.preventDefault();
+                const email = document.getElementById("email").value;
+                const password = document.getElementById("password").value;
+
+                try {
+                    const response = await fetch(`${serverBaseUrl}/createaccount.php`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ email, password }),
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        alert("Account creation successful! Redirecting to login.");
+                        window.location.href = "index.html"; // Redirect to index.html
+                    } else {
+                        alert(data.message);
+                    }
+                } catch (error) {
+                    console.error("Account creation failed: Email already in use", error);
+                    alert("An error occurred. Please try again.");
+                }
+            });
+        });
+    </script>
+</body>
+</html>

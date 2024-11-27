@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cookbook</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>My Cookbook</h1>
+    </header>
+    <main>
+        <section id="cookbook-section">
+            <h2>Saved Recipes</h2>
+            <ul id="saved-recipes">
+                <!-- Saved recipes will be dynamically loaded here -->
+            </ul>
+        </section>
+
+        <section id="actions-section">
+            <h2>Add a New Recipe</h2>
+            <form id="add-recipe-form">
+                <label for="recipe-name">Recipe Name:</label>
+                <input type="text" id="recipe-name" placeholder="Enter recipe name" required>
+                
+                <label for="recipe-details">Details:</label>
+                <textarea id="recipe-details" placeholder="Enter recipe details" required></textarea>
+                
+                <button type="submit">Add to Cookbook</button>
+            </form>
+        </section>
+    </main>
+    <footer>
+        <p>© 2024 My Cookbook. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const savedRecipes = document.getElementById("saved-recipes");
+            const addRecipeForm = document.getElementById("add-recipe-form");
+
+            // Load saved recipes from local storage or initialize
+            let recipes = JSON.parse(localStorage.getItem("cookbook")) || [];
+
+            // Function to render recipes
+            function renderRecipes() {
+                savedRecipes.innerHTML = recipes.map((recipe, index) => `
+                    <li>
+                        <h3>${recipe.name}</h3>
+                        <p>${recipe.details}</p>
+                        <button onclick="removeRecipe(${index})">Remove</button>
+                    </li>
+                `).join("");
+            }
+
+            // Add a recipe
+            addRecipeForm.addEventListener("submit", (event) => {
+                event.preventDefault();
+                const name = document.getElementById("recipe-name").value;
+                const details = document.getElementById("recipe-details").value;
+
+                recipes.push({ name, details });
+                localStorage.setItem("cookbook", JSON.stringify(recipes));
+                renderRecipes();
+
+                // Clear the form
+                addRecipeForm.reset();
+            });
+
+            // Remove a recipe
+            window.removeRecipe = (index) => {
+                recipes.splice(index, 1);
+                localStorage.setItem("cookbook", JSON.stringify(recipes));
+                renderRecipes();
+            };
+
+            // Initial render
+            renderRecipes();
+        });
+    </script>
+</body>
+</html>
